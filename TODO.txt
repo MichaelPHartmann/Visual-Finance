@@ -23,5 +23,3 @@ Python layer to interact with databases
   - method to check that the databases exist and if not, it will create them?
 
 Frontend GUI for navigation
-
-GET GOOD ON GIT??
