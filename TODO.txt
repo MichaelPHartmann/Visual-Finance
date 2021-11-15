@@ -1,0 +1,25 @@
+Web scraper for EDGAR filings - Added to project
+  - Use Node.js scraper for this
+  - running the program will launch a localhost with the scraper
+
+API service or web scraper for financial data - Added to project
+  - This uses a section forked from FinMesh and modified for this application
+  - A token must be added to request
+  - You can specify sandbox by adding 'sandbox_state=True' to a request method
+
+Database for current stock holdings
+  - SQLite3 database
+  TICKER STRING NOT NULL
+  PRICE INT NOT NULL
+  DATE_LAST_UPDATED DATE NOT NULL
+
+Database for stock watchlist
+  - SQLite3 database
+  TICKER STRING NOT NULL
+  PRICE INT NOT NULL
+
+Python layer to interact with databases
+  - access class with child class for each database
+  - method to check that the databases exist and if not, it will create them?
+
+Frontend GUI for navigation
