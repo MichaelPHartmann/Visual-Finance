@@ -22,7 +22,7 @@ THIRD_ADD = ('AAPL', 62, 39)
 FOURTH_ADD = ('BB', 1793265, 91830562.70916523)
 def access_testing():
     c = portfolioDB('want')
-    c._setup_portfolio_table()
+    c.setup_portfolio_table()
     c.add_to_portfolio_table(*FIRST_ADD)
     c.add_to_portfolio_table(*SECOND_ADD)
     c.add_to_portfolio_table(*THIRD_ADD)

@@ -30,7 +30,7 @@ class portfolioDB(dbAccess):
         # Create a connection and a cursor object for the watchlist database
         self.conn, self.c = self.create_database_connection(self.portfolio_db)
 
-    def _setup_portfolio_table(self):
+    def setup_portfolio_table(self):
         """Sets up a database for portfolio stock holdings."""
         query = self.qb.create_table()
         self.conn.execute(query)
@@ -80,31 +80,42 @@ class watchlistDB(dbAccess):
     def __init__(self, nickname):
         # Import parent class attributes
         dbAccess.__init__(self, nickname)
+        self.qb = queryBuilder('watchlist', nickname)
         # Create a connection and a cursor object for the watchlist database
         self.conn, self.c = self.create_database_connection(self.watchlist_db)
-        self.length = self.c.execute("SELECT COUNT(*) FROM ?", self.nickname_tuple).fetchall()[0][0]
 
-    def _setup_watchlist_db(self):
-        """Sets up a database for a stock watchlist."""
-        self.conn.execute(f"""CREATE TABLE ?
-        (ID INT PRIMARY KEY  NOT NULL,
-        TICKER TEXT UNIQUE NOT NULL,
-        PRICE REAL);
-        """, self.nickname_tuple)
+    def setup_watchlist_table(self):
+        """Sets up a database for watchlist stock holdings."""
+        query = self.qb.create_table()
+        self.conn.execute(query)
+        self.conn.commit()
 
     def add_to_watchlist_db(self, ticker):
-        result = self.c.execute("SELECT * FROM ? WHERE TICKER = ?", (self.nickname, ticker)).fetchall()
+        query = self.qb.select_from_table()
+        result = self.c.execute(query, (ticker,)).fetchall()
         exists_binary = len(result)
         assert exists_binary == 1, 'You already have the ticker in this watchlist'
 
+        self.length = self.c.execute(self.qb.total_rows_from_table()).fetchall()[0][0]
         id = self.length + 1
-        insert = (id, ticker)
-        self.c.execute(f"INSERT INTO portfolio VALUES (?,?);", insert)
+        insert = (id, ticker, quantity, basis_price)
+        query = self.qb.insert_into_table(4)
+        self.c.execute(query, insert)
         self.conn.commit()
 
-    def delete_from_watchlist_db(self, ticker):
-        pass
+    def drop_watchlist_table(self):
+        """Deletes a watchlist table from the database."""
+        query = self.qb.drop_table()
+        self.conn.execute(query)
+        self.conn.commit()
 
-    def see_watchlist_db(self):
-        for row in self.c.execute('SELECT * FROM ?', self.nickname_tuple):
+    def delete_from_watchlist_table(self, ticker):
+        """Deletes a row from the watchlist table specified."""
+        query = self.qb.delete_from_table()
+        self.conn.execute(query, (ticker,))
+        self.conn.commit()
+
+    def see_watchlist_table(self):
+        query = self.qb.all_rows_in_table()
+        for row in self.c.execute(query):
             print(row)
