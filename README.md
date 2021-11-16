@@ -15,6 +15,7 @@
 - SQLite
   - scratch-built query builder
   - scratch built input sanitizer
+  - CRUD
 
 #### Watchlists and Portfolios
 While both of these databases hold information about stocks, they differ in the scope of information.
