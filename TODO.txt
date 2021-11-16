@@ -7,7 +7,7 @@ API service or web scraper for financial data - Added to project
   - A token must be added to request
   - You can specify sandbox by adding 'sandbox_state=True' to a request method
 
-Database for current stock holdings
+Database for current stock holdings - CRUD enable, feature basics complete
   - SQLite3 database
   TICKER STRING NOT NULL
   QUANTITY INT NOT NULL
@@ -15,18 +15,18 @@ Database for current stock holdings
   PRICE INT
   DATE_LAST_UPDATED DATE NOT NULL
 
-Database for stock watchlist
+Database for stock watchlist - CRUD enable, feature basics complete
   - SQLite3 database
   TICKER STRING NOT NULL
   PRICE INT NOT NULL
 
-SQL Query Builder
+SQL Query Builder - Added to project
   - Table names are created dynamicaly by the program, and params are not supported by the sqlite library
   - Builds query strings for the main queries used.
   - Sanitizes user input of table names
   - Streamlines queries in the main module
 
-Python layer to interact with databases
+Python layer to interact with databases - Basic interaction is done
   - access class with child class for each database
   - method to check that the databases exist and if not, it will create them?
 
