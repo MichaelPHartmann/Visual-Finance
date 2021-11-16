@@ -5,6 +5,7 @@
 #### **Technologies**
 - Python
   - requests
+  - flask
   - GUI
 - JavaScript
   - Node.js

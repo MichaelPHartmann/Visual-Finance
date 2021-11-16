@@ -10,7 +10,9 @@ API service or web scraper for financial data - Added to project
 Database for current stock holdings
   - SQLite3 database
   TICKER STRING NOT NULL
-  PRICE INT NOT NULL
+  QUANTITY INT NOT NULL
+  BASIS_PRICE REAL NOT NULL
+  PRICE INT
   DATE_LAST_UPDATED DATE NOT NULL
 
 Database for stock watchlist
