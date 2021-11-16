@@ -13,3 +13,5 @@
     - cheerio
     - axios
 - SQLite
+  - scratch-built query builder
+  - scratch built input sanitizer

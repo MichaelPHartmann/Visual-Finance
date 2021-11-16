@@ -20,6 +20,12 @@ Database for stock watchlist
   TICKER STRING NOT NULL
   PRICE INT NOT NULL
 
+SQL Query Builder
+  - Table names are created dynamicaly by the program, and params are not supported by the sqlite library
+  - Builds query strings for the main queries used.
+  - Sanitizes user input of table names
+  - Streamlines queries in the main module
+
 Python layer to interact with databases
   - access class with child class for each database
   - method to check that the databases exist and if not, it will create them?
