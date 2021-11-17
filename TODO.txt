@@ -25,9 +25,16 @@ SQL Query Builder - Added to project
   - Builds query strings for the main queries used.
   - Sanitizes user input of table names
   - Streamlines queries in the main module
+  - These methods are probably too specific to the queries we need, but flexible if I need to expand them
 
 Python layer to interact with databases - Basic interaction is done
   - access class with child class for each database
   - method to check that the databases exist and if not, it will create them?
 
 Frontend GUI for navigation
+  - TKinter is probably the best solution
+
+November 17th
+It looks like the backend is pretty much ready to go.
+It will obviously need work once I know exactly how the GUI will interact but for now everything is working.
+I reorganized the file structure to clean it up a bit.

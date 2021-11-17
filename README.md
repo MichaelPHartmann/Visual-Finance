@@ -6,7 +6,7 @@
 - Python
   - requests
   - flask
-  - GUI
+  - GUI/ tkinter
 - JavaScript
   - Node.js
     - express
