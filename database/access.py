@@ -11,7 +11,7 @@ class dbAccess():
         # The portfolio database will always be named the same
         self.portfolio_db = 'portfolio.db'
         # Need to support multiple watchlist databases so the '%n' can be replaced with an arbitrary string
-        self.watchlist_db = '%nwatchlist.db'
+        self.watchlist_db = 'watchlist.db'
         self.nickname = nickname
         # A tuple is recomended as passing it in prevents SQL injection attacks
         self.nickname_tuple = (self.nickname,)
@@ -90,16 +90,17 @@ class watchlistDB(dbAccess):
         self.conn.execute(query)
         self.conn.commit()
 
-    def add_to_watchlist_db(self, ticker):
+    def add_to_watchlist_table(self, ticker, price):
         query = self.qb.select_from_table()
         result = self.c.execute(query, (ticker,)).fetchall()
         exists_binary = len(result)
-        assert exists_binary == 1, 'You already have the ticker in this watchlist'
-
+        if exists_binary == 1:
+            print("This ticker already exists in the watchlist!")
+            return
         self.length = self.c.execute(self.qb.total_rows_from_table()).fetchall()[0][0]
         id = self.length + 1
-        insert = (id, ticker, quantity, basis_price)
-        query = self.qb.insert_into_table(4)
+        insert = (id, ticker, price)
+        query = self.qb.insert_into_table(3)
         self.c.execute(query, insert)
         self.conn.commit()
 
