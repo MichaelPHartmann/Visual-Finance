@@ -33,6 +33,9 @@ Python layer to interact with databases - Basic interaction is done
 
 Frontend GUI for navigation
   - TKinter is probably the best solution
+  - token entry field
+  - sandbox radio box
+  -
 
 November 17th
 It looks like the backend is pretty much ready to go.
