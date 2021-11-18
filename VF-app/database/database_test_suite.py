@@ -20,7 +20,7 @@ PORTFOLIO_SECOND_ADD = ('FARM', 85, 13.94)
 PORTFOLIO_THIRD_ADD = ('AAPL', 62, 39)
 PORTFOLIO_FOURTH_ADD = ('BB', 1793265, 91830562.70916523)
 def portfolio_access_testing():
-    c = portfolioDB('want')
+    c = portfolioDB()
     c.setup_portfolio_table()
     c.add_to_portfolio_table(*PORTFOLIO_FIRST_ADD)
     c.add_to_portfolio_table(*PORTFOLIO_SECOND_ADD)

@@ -1,13 +1,13 @@
 import os
 import sys
 import sqlite3
-from .query_builder import queryBuilder
+from query_builder import queryBuilder
 
 class dbAccess():
     """The parent class for all database operations.
     This class contains standard methods for all databases"""
 
-    def __init__(self, nickname='default'):
+    def __init__(self, nickname):
         # The portfolio database will always be named the same
         self.portfolio_db = 'portfolio.db'
         # Need to support multiple watchlist databases so the '%n' can be replaced with an arbitrary string
@@ -23,7 +23,7 @@ class dbAccess():
 
 class portfolioDB(dbAccess):
     """A child class of dbAccess that interacts with the portfolio stock holdings database."""
-    def __init__(self, nickname):
+    def __init__(self, nickname='test'):
         # Import parent class attributes
         dbAccess.__init__(self, nickname)
         self.qb = queryBuilder('portfolio', nickname)
@@ -83,7 +83,7 @@ class portfolioDB(dbAccess):
 
 class watchlistDB(dbAccess):
     """A child class of dbAccess that interacts with the portfolio stock holdings database."""
-    def __init__(self, nickname):
+    def __init__(self, nickname='test'):
         # Import parent class attributes
         dbAccess.__init__(self, nickname)
         self.qb = queryBuilder('watchlist', nickname)
