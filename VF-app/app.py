@@ -5,6 +5,7 @@
 # from PyQt5.QtGui import QCursor
 
 import sys
+from database import access
 from PyQt5.QtWidgets import QMainWindow, QLabel, QApplication, QWidget, QPushButton, QAction, QLineEdit, QMessageBox, QGridLayout
 from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import pyqtSlot
@@ -44,10 +45,21 @@ class App(QWidget):
         self.tokenbox_name.move(20,20)
         self.tokenbox_name.resize(200, 40)
 
+    def drop_down_menu(self):
+        self.selection_box = QComboBox()
+        pass
+
     def textbox_button(self):
         # Create a button in the window
         self.button = QPushButton('Show text', self)
         self.button.move(20,80)
+
+    def get_existing_tables(self, database_name):
+        if database_name == "portfolio":
+            db = access.portfolioDB()
+            tables = db.tables
+        elif database_name == 'watchlist':
+            db = access.watchlistDB()
 
     @pyqtSlot()
     def on_click(self):
