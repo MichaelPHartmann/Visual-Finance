@@ -6,7 +6,7 @@
 
 import sys
 from database import access
-from PyQt5.QtWidgets import QMainWindow, QLabel, QApplication, QWidget, QPushButton, QAction, QLineEdit, QMessageBox, QGridLayout
+from PyQt5.QtWidgets import QMainWindow, QLabel, QComboBox, QApplication, QWidget, QPushButton, QAction, QLineEdit, QMessageBox, QGridLayout
 from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import pyqtSlot
 
@@ -25,12 +25,14 @@ class App(QWidget):
         self.setWindowTitle(self.title)
         self.setStyleSheet("background: 'lightgrey';")
         self.main_layout = QGridLayout()
+        self.get_existing_tables()
         self.tokenbox()
         self.textbox_button()
+        self.drop_down_menu()
         self.main_layout.addWidget(self.tokenbox,0,1)
         self.main_layout.addWidget(self.tokenbox_name,0,0)
-        self.main_layout.addWidget(self.button, 1,0,1,2)
-        self.button.clicked.connect(self.on_click)
+        self.main_layout.addWidget(self.selection_box, 1,0,1,2)
+        # self.button.clicked.connect(self.on_click)
         self.setLayout(self.main_layout)
         self.show()
 
@@ -47,20 +49,19 @@ class App(QWidget):
 
     def drop_down_menu(self):
         self.selection_box = QComboBox()
-        pass
+        self.selection_box.addItems(self.portfolio_tables)
 
     def textbox_button(self):
         # Create a button in the window
         self.button = QPushButton('Show text', self)
         self.button.move(20,80)
 
-    def get_existing_tables(self, database_name):
-        if database_name == "portfolio":
-            db = access.portfolioDB()
-            self.tables = db.tables
-        elif database_name == 'watchlist':
-            db = access.watchlistDB()
-            self.tables = db.tables
+    def get_existing_tables(self):
+        db = access.portfolioDB()
+        self.portfolio_tables = db.tables
+        
+        db = access.watchlistDB()
+        self.watchlist_tables = db.tables
 
     @pyqtSlot()
     def on_click(self):

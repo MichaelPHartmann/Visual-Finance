@@ -57,5 +57,3 @@ def watchlist_access_testing():
     print('DELETING TABLE NOW')
     c.see_watchlist_table()
     c.close_database()
-
-portfolio_access_testing()

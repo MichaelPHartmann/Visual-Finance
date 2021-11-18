@@ -1,7 +1,7 @@
 import os
 import sys
 import sqlite3
-from query_builder import queryBuilder
+from .query_builder import queryBuilder
 
 class dbAccess():
     """The parent class for all database operations.
