@@ -1,7 +1,7 @@
 import os
 import sys
 import sqlite3
-from .query_builder import queryBuilder
+from query_builder import queryBuilder
 
 class dbAccess():
     """The parent class for all database operations.
@@ -9,9 +9,9 @@ class dbAccess():
 
     def __init__(self, nickname):
         # The portfolio database will always be named the same
-        self.portfolio_db = 'portfolio.db'
+        self.portfolio_db = os.path.join(os.path.dirname(__file__), 'portfolio.db')
         # Need to support multiple watchlist databases so the '%n' can be replaced with an arbitrary string
-        self.watchlist_db = 'watchlist.db'
+        self.watchlist_db = os.path.join(os.path.dirname(__file__), 'watchlist.db')
         self.nickname = nickname
         # A tuple is recomended as passing it in prevents SQL injection attacks
         self.nickname_tuple = (self.nickname,)

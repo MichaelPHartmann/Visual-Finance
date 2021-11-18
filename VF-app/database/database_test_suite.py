@@ -1,5 +1,7 @@
 from query_builder import *
 from access import *
+import sys
+import os
 
 DATABASE = 'current'
 TABLETEST = ';DROP %^t!)e@(s#*t$& WHERE \\'
