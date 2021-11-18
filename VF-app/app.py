@@ -25,10 +25,12 @@ class App(QWidget):
         self.setWindowTitle(self.title)
         self.setStyleSheet("background: 'lightgrey';")
         self.main_layout = QGridLayout()
+        # Create the elements for the initial page
         self.get_existing_tables()
         self.tokenbox()
         self.textbox_button()
         self.drop_down_menu()
+        # Add elements to layout
         self.main_layout.addWidget(self.tokenbox,0,1)
         self.main_layout.addWidget(self.tokenbox_name,0,0)
         self.main_layout.addWidget(self.selection_box, 1,0,1,2)
@@ -37,7 +39,7 @@ class App(QWidget):
         self.show()
 
     def tokenbox(self):
-        # Create textbox
+        # Create text box for the IEX Cloud token to be entered into
         self.tokenbox_name = QLabel(self)
         self.tokenbox_name.setText('IEX Cloud Token:')
         self.tokenbox = QLineEdit(self)
@@ -57,9 +59,10 @@ class App(QWidget):
         self.button.move(20,80)
 
     def get_existing_tables(self):
+        # Find all the table names in the portfolio database
         db = access.portfolioDB()
         self.portfolio_tables = db.tables
-        
+        # Find all the table names in the portfolio database
         db = access.watchlistDB()
         self.watchlist_tables = db.tables
 
