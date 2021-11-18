@@ -57,9 +57,10 @@ class App(QWidget):
     def get_existing_tables(self, database_name):
         if database_name == "portfolio":
             db = access.portfolioDB()
-            tables = db.tables
+            self.tables = db.tables
         elif database_name == 'watchlist':
             db = access.watchlistDB()
+            self.tables = db.tables
 
     @pyqtSlot()
     def on_click(self):
