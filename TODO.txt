@@ -43,3 +43,8 @@ November 17th
 It looks like the backend is pretty much ready to go.
 It will obviously need work once I know exactly how the GUI will interact but for now everything is working.
 I reorganized the file structure to clean it up a bit.
+
+November 18th
+Attached the database module to the GUI to display the tables available.
+Want to have the top sections remain (token and selection box) and have the bottom section react to the changes to input
+Bottom section will display the stocks of a portfolio or watchlist, and then when you click on one it will bring you to a new section with the information.
