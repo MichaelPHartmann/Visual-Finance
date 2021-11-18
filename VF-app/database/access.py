@@ -25,7 +25,7 @@ class portfolioDB(dbAccess):
     """A child class of dbAccess that interacts with the portfolio stock holdings database."""
     def __init__(self, nickname):
         # Import parent class attributes
-        dbAccess.__init__(self, nickname)
+        dbAccess.__init__(self, nickname='default')
         self.qb = queryBuilder('portfolio', nickname)
         # Create a connection and a cursor object for the watchlist database
         self.conn, self.c = self.create_database_connection(self.portfolio_db)
@@ -86,7 +86,7 @@ class watchlistDB(dbAccess):
     def __init__(self, nickname):
         # Import parent class attributes
         dbAccess.__init__(self, nickname)
-        self.qb = queryBuilder('watchlist', nickname)
+        self.qb = queryBuilder('watchlist', nickname='default')
         # Create a connection and a cursor object for the watchlist database
         self.conn, self.c = self.create_database_connection(self.watchlist_db)
         self.tables = self.conn.execute("SELECT name FROM sqlite_master WHERE type='table';").fetchall()
