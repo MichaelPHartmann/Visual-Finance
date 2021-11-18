@@ -31,9 +31,11 @@ def portfolio_access_testing():
     c.delete_from_portfolio_table('BB')
     print('VIEWING TABLE BEFORE DROP')
     c.see_portfolio_table()
+    print(c.tables)
     c.drop_portfolio_table()
     print('DELETING TABLE NOW')
     c.see_portfolio_table()
+    c.close_database()
 
 WATCHLIST_FIRST_ADD = ('AAPL', 182.74)
 WATCHLIST_SECOND_ADD = ('FARM', 13.94)
@@ -54,3 +56,6 @@ def watchlist_access_testing():
     c.drop_watchlist_table()
     print('DELETING TABLE NOW')
     c.see_watchlist_table()
+    c.close_database()
+
+portfolio_access_testing()

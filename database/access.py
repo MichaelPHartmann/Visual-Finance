@@ -29,7 +29,6 @@ class portfolioDB(dbAccess):
         self.qb = queryBuilder('portfolio', nickname)
         # Create a connection and a cursor object for the watchlist database
         self.conn, self.c = self.create_database_connection(self.portfolio_db)
-        self.tables = self.conn.execute("SELECT name FROM sqlite_master WHERE type='table';").fetchall()
 
     def setup_portfolio_table(self):
         """Sets up a database for portfolio stock holdings."""
@@ -55,7 +54,7 @@ class portfolioDB(dbAccess):
             id = self.length + 1
             insert = (id, ticker, quantity, basis_price)
             query = self.qb.insert_into_table(4)
-            self.conn.execute(query, insert)
+            self.c.execute(query, insert)
         self.conn.commit()
 
     def drop_portfolio_table(self):
@@ -72,13 +71,8 @@ class portfolioDB(dbAccess):
 
     def see_portfolio_table(self):
         query = self.qb.all_rows_in_table()
-        for row in self.conn.execute(query):
+        for row in self.c.execute(query):
             print(row)
-
-    def close_database(self):
-        self.c.close()
-        self.conn.close()
-        pass
 
 
 class watchlistDB(dbAccess):
@@ -89,7 +83,6 @@ class watchlistDB(dbAccess):
         self.qb = queryBuilder('watchlist', nickname)
         # Create a connection and a cursor object for the watchlist database
         self.conn, self.c = self.create_database_connection(self.watchlist_db)
-        self.tables = self.conn.execute("SELECT name FROM sqlite_master WHERE type='table';").fetchall()
 
     def setup_watchlist_table(self):
         """Sets up a database for watchlist stock holdings."""
@@ -127,8 +120,3 @@ class watchlistDB(dbAccess):
         query = self.qb.all_rows_in_table()
         for row in self.c.execute(query):
             print(row)
-
-    def close_database(self):
-        self.c.close()
-        self.conn.close()
-        pass
