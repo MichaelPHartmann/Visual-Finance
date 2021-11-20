@@ -1,7 +1,7 @@
 import os
 import sys
 import sqlite3
-from query_builder import queryBuilder
+from .query_builder import queryBuilder
 
 class dbAccess():
     """The parent class for all database operations.
@@ -29,7 +29,14 @@ class portfolioDB(dbAccess):
         self.qb = queryBuilder('portfolio', nickname)
         # Create a connection and a cursor object for the watchlist database
         self.conn, self.c = self.create_database_connection(self.portfolio_db)
-        self.tables = self.conn.execute("SELECT name FROM sqlite_master WHERE type='table';").fetchall()
+        self.list_available_portfolio_tables()
+
+    def list_available_portfolio_tables(self):
+        tables = []
+        tuple_list = self.conn.execute("SELECT name FROM sqlite_master WHERE type='table'").fetchall()
+        for tuple in tuple_list:
+            tables.append(tuple[0])
+        self.tables = tables
 
     def setup_portfolio_table(self):
         """Sets up a database for portfolio stock holdings."""
@@ -89,7 +96,13 @@ class watchlistDB(dbAccess):
         self.qb = queryBuilder('watchlist', nickname)
         # Create a connection and a cursor object for the watchlist database
         self.conn, self.c = self.create_database_connection(self.watchlist_db)
-        self.tables = self.conn.execute("SELECT name FROM sqlite_master WHERE type='table';").fetchall()
+
+    def list_available_portfolio_tables(self):
+        tables = []
+        tuple_list = self.conn.execute("SELECT name FROM sqlite_master WHERE type='table'").fetchall()
+        for tuple in tuple_list:
+            tables.append(tuple[0])
+        self.tables = tables
 
     def setup_watchlist_table(self):
         """Sets up a database for watchlist stock holdings."""

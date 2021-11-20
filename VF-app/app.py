@@ -51,6 +51,7 @@ class App(QWidget):
 
     def drop_down_menu(self):
         self.selection_box = QComboBox()
+        print(self.portfolio_tables)
         self.selection_box.addItems(self.portfolio_tables)
 
     def textbox_button(self):
