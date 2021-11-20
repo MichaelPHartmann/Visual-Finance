@@ -6,7 +6,7 @@
 
 import sys
 from database import access
-from PyQt5.QtWidgets import QMainWindow, QLabel, QComboBox, QApplication, QWidget, QPushButton, QAction, QLineEdit, QMessageBox, QGridLayout
+from PyQt5.QtWidgets import QRadioButton, QCheckBox, QMainWindow, QLabel, QComboBox, QApplication, QWidget, QPushButton, QAction, QLineEdit, QMessageBox, QGridLayout
 from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import pyqtSlot
 
@@ -23,12 +23,22 @@ class selectionScreenVF(QWidget):
         # Create the elements for the initial page
         self.get_existing_tables()
         self.tokenbox()
+        self.sandbox_state = QCheckBox("SandBox Mode")
+        self.portfolio_radio = QRadioButton("Portfolios")
+        self.watchlist_radio = QRadioButton("Watchlists")
+        self.selection_box = QComboBox()
         # self.textbox_button()
-        self.drop_down_menu()
+
         # Add elements to layout
-        self.main_layout.addWidget(self.tokenbox,0,1)
         self.main_layout.addWidget(self.tokenbox_name,0,0)
-        self.main_layout.addWidget(self.selection_box, 1,2)
+        self.main_layout.addWidget(self.tokenbox,0,1)
+        self.main_layout.addWidget(self.sandbox_state,0,2)
+        self.main_layout.addWidget(self.selection_box, 1,0)
+        self.main_layout.addWidget(self.portfolio_radio, 1,1)
+        self.main_layout.addWidget(self.watchlist_radio, 1,2)
+
+        self.portfolio_radio.toggled.connect(lambda:self.database_state(self.portfolio_radio))
+        self.watchlist_radio.toggled.connect(lambda:self.database_state(self.watchlist_radio))
         # self.button.clicked.connect(self.on_click)
         self.setLayout(self.main_layout)
         self.show()
@@ -44,15 +54,22 @@ class selectionScreenVF(QWidget):
         # self.tokenbox_name.move(20,20)
         self.tokenbox_name.resize(200, 40)
 
-    def drop_down_menu(self):
-        self.selection_box = QComboBox()
-        print(self.portfolio_tables)
-        self.selection_box.addItems(self.portfolio_tables)
+    def database_state(self, radio_button):
+        if radio_button.text() == "Portfolios":
+            if radio_button.isChecked() == True:
+                self.selection_box.clear()
+                self.selection_box.addItems(self.portfolio_tables)
+
+        if radio_button.text() == "Watchlists":
+            if radio_button.isChecked() == True:
+                self.selection_box.clear()
+                self.selection_box.addItems(self.watchlist_tables)
+
 
     def textbox_button(self):
         # Create a button in the window
         self.button = QPushButton('Show text', self)
-        self.button.move(20,80)
+        # self.button.move(20,80)
 
     def get_existing_tables(self):
         # Find all the table names in the portfolio database
