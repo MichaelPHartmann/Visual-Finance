@@ -13,7 +13,7 @@ from PyQt5.QtCore import pyqtSlot
 class selectionScreenVF(QWidget):
     def __init__(self):
         super().__init__()
-        self.title = 'Visual Finance'
+        self.title = 'Visual Finance - Portfolio and Watchlist Viewer'
         self.setWindowTitle(self.title)
         self.setStyleSheet("background: 'lightgrey';")
         self.main_layout = QGridLayout()
@@ -21,14 +21,15 @@ class selectionScreenVF(QWidget):
 
     def init_selection(self):
         # Create the elements for the initial page
+        # Get the available tables from the SQL databases
         self.get_existing_tables()
+        # Create the token entry box and label
         self.tokenbox()
+        # Define simple elements
         self.sandbox_state = QCheckBox("SandBox Mode")
         self.portfolio_radio = QRadioButton("Portfolios")
         self.watchlist_radio = QRadioButton("Watchlists")
         self.selection_box = QComboBox()
-        # self.textbox_button()
-
         # Add elements to layout
         self.main_layout.addWidget(self.tokenbox_name,0,0)
         self.main_layout.addWidget(self.tokenbox,0,1)
@@ -36,7 +37,7 @@ class selectionScreenVF(QWidget):
         self.main_layout.addWidget(self.selection_box, 1,0)
         self.main_layout.addWidget(self.portfolio_radio, 1,1)
         self.main_layout.addWidget(self.watchlist_radio, 1,2)
-
+        # Set behaviour for toggling between the desired database
         self.portfolio_radio.toggled.connect(lambda:self.database_state(self.portfolio_radio))
         self.watchlist_radio.toggled.connect(lambda:self.database_state(self.watchlist_radio))
         # self.button.clicked.connect(self.on_click)
@@ -59,17 +60,12 @@ class selectionScreenVF(QWidget):
             if radio_button.isChecked() == True:
                 self.selection_box.clear()
                 self.selection_box.addItems(self.portfolio_tables)
-
+                self.database_displayed = "Portfolio"
         if radio_button.text() == "Watchlists":
             if radio_button.isChecked() == True:
                 self.selection_box.clear()
                 self.selection_box.addItems(self.watchlist_tables)
-
-
-    def textbox_button(self):
-        # Create a button in the window
-        self.button = QPushButton('Show text', self)
-        # self.button.move(20,80)
+                self.database_displayed = "Watchlist"
 
     def get_existing_tables(self):
         # Find all the table names in the portfolio database
@@ -79,15 +75,89 @@ class selectionScreenVF(QWidget):
         db = access.watchlistDB()
         self.watchlist_tables = db.tables
 
-    @pyqtSlot()
-    def on_click(self):
-        textboxValue = self.tokenbox.text()
-        QMessageBox.question(self, 'Message', "You typed: " + textboxValue, QMessageBox.Ok, QMessageBox.Ok)
-        self.tokenbox.setText("")
-
-class App(selectionScreenVF):
+class additionScreenVF(QWidget):
     def __init__(self):
         super().__init__()
+        self.get_existing_tables()
+        self.title = 'Visual Finance - Add to a Portfolio or Watchlist'
+        self.setWindowTitle(self.title)
+        self.setStyleSheet("background: 'lightgrey';")
+        self.main_layout = QGridLayout()
+        self.database_chosen = 'None'
+        self.init_addition()
+        self.show_addition_fields()
+
+    def init_addition(self):
+        self.sandbox_state = QCheckBox("SandBox Mode")
+        self.portfolio_radio = QRadioButton("Portfolios")
+        self.watchlist_radio = QRadioButton("Watchlists")
+        self.selection_box = QComboBox()
+        self.main_layout.addWidget(self.selection_box, 0,0)
+        self.main_layout.addWidget(self.portfolio_radio, 0,1)
+        self.main_layout.addWidget(self.watchlist_radio, 0,2)
+        self.ticker_label = QLabel(self)
+        self.ticker_label.setText('Ticker:')
+        self.ticker_entry = QLineEdit(self)
+        self.ticker_entry.setStyleSheet("background: 'white';")
+        self.quantity_label = QLabel(self)
+        self.quantity_label.setText('Quantity:')
+        self.quantity_entry = QLineEdit(self)
+        self.quantity_entry.setStyleSheet("background: 'white';")
+        self.basis_label = QLabel(self)
+        self.basis_label.setText('Basis Price:')
+        self.basis_entry = QLineEdit(self)
+        self.basis_entry.setStyleSheet("background: 'white';")
+        self.enter_button = QPushButton("Save")
+        # Set behaviour for toggling between the desired database
+        self.portfolio_radio.toggled.connect(lambda:self.database_state(self.portfolio_radio))
+        self.watchlist_radio.toggled.connect(lambda:self.database_state(self.watchlist_radio))
+        self.setLayout(self.main_layout)
+        self.show()
+
+    def get_existing_tables(self):
+        # Find all the table names in the portfolio database
+        db = access.portfolioDB()
+        self.portfolio_tables = db.tables
+        # Find all the table names in the portfolio database
+        db = access.watchlistDB()
+        self.watchlist_tables = db.tables
+
+
+    def database_state(self, radio_button):
+        if radio_button.text() == "Portfolios":
+            if radio_button.isChecked() == True:
+                self.selection_box.clear()
+                self.selection_box.addItems(self.portfolio_tables)
+                self.database_chosen = "Portfolio"
+                self.main_layout.addWidget(self.ticker_label,1,0)
+                self.main_layout.addWidget(self.ticker_entry,1,1)
+                self.main_layout.addWidget(self.quantity_label,2,0)
+                self.main_layout.addWidget(self.quantity_entry,2,1)
+                self.main_layout.addWidget(self.basis_label,3,0)
+                self.main_layout.addWidget(self.basis_entry,3,1)
+        else:# radio_button.text() == "Watchlists":
+            if radio_button.isChecked() == True:
+                self.selection_box.clear()
+                self.selection_box.addItems(self.watchlist_tables)
+                self.main_layout.addWidget(self.ticker_label,1,0)
+                self.main_layout.addWidget(self.ticker_entry,1,1)
+                self.database_chosen = "Watchlist"
+
+
+    def show_addition_fields(self):
+
+        self.main_layout.addWidget(self.enter_button,4,0,1,2)
+        self.enter_button.clicked.connect(self.send_information)
+
+    def send_information(self):
+        ticker = self.ticker_entry.text().upper()
+        quantity = int(self.quantity_entry.text())
+        price_basis = float(self.basis_entry.text())
+        # if database_chosen == 'Portfolio'
+
+class App(selectionScreenVF, additionScreenVF):
+    def __init__(self):
+        additionScreenVF.__init__(self)
 
 
 if __name__ == '__main__':
