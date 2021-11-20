@@ -10,30 +10,25 @@ from PyQt5.QtWidgets import QMainWindow, QLabel, QComboBox, QApplication, QWidge
 from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import pyqtSlot
 
-class App(QWidget):
-
+class selectionScreenVF(QWidget):
     def __init__(self):
         super().__init__()
         self.title = 'Visual Finance'
-        # self.left = 10
-        # self.top = 10
-        # self.width = 500
-        # self.height = 500
-        self.initUI()
-
-    def initUI(self):
         self.setWindowTitle(self.title)
         self.setStyleSheet("background: 'lightgrey';")
         self.main_layout = QGridLayout()
+        self.init_selection()
+
+    def init_selection(self):
         # Create the elements for the initial page
         self.get_existing_tables()
         self.tokenbox()
-        self.textbox_button()
+        # self.textbox_button()
         self.drop_down_menu()
         # Add elements to layout
         self.main_layout.addWidget(self.tokenbox,0,1)
         self.main_layout.addWidget(self.tokenbox_name,0,0)
-        self.main_layout.addWidget(self.selection_box, 1,0,1,2)
+        self.main_layout.addWidget(self.selection_box, 1,2)
         # self.button.clicked.connect(self.on_click)
         self.setLayout(self.main_layout)
         self.show()
@@ -44,9 +39,9 @@ class App(QWidget):
         self.tokenbox_name.setText('IEX Cloud Token:')
         self.tokenbox = QLineEdit(self)
         self.tokenbox.setStyleSheet("background: 'white';")
-        self.tokenbox.move(150, 20)
+        # self.tokenbox.move(150, 20)
         self.tokenbox.resize(300,40)
-        self.tokenbox_name.move(20,20)
+        # self.tokenbox_name.move(20,20)
         self.tokenbox_name.resize(200, 40)
 
     def drop_down_menu(self):
@@ -72,6 +67,11 @@ class App(QWidget):
         textboxValue = self.tokenbox.text()
         QMessageBox.question(self, 'Message', "You typed: " + textboxValue, QMessageBox.Ok, QMessageBox.Ok)
         self.tokenbox.setText("")
+
+class App(selectionScreenVF):
+    def __init__(self):
+        super().__init__()
+
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
