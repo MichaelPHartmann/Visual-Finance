@@ -96,8 +96,9 @@ class watchlistDB(dbAccess):
         self.qb = queryBuilder('watchlist', nickname)
         # Create a connection and a cursor object for the watchlist database
         self.conn, self.c = self.create_database_connection(self.watchlist_db)
+        self.list_available_watchlist_tables
 
-    def list_available_portfolio_tables(self):
+    def list_available_watchlist_tables(self):
         tables = []
         tuple_list = self.conn.execute("SELECT name FROM sqlite_master WHERE type='table'").fetchall()
         for tuple in tuple_list:
